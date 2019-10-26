@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource 	name="jdbc/memberDB" 
+				auth="Container" 
+				type="javax.sql.DataSource" 
+				username="javaDB2" 
+				password="javaDB2" 
+				driverClassName="oracle.jdbc.driver.OracleDriver" 
+				factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory" 
+				url="jdbc:oracle:thin:@localhost:1521:orcl" 
+				maxActive="500">				
+	</Resource>
+</Context>
