@@ -47,6 +47,8 @@ public class BoardInsertController implements Controller {
 			FileUtils.moveFileToDirectory(srcFile, destDir, true);
 			srcFile.delete();
 		}
+		
+		
 		PrintWriter pw = response.getWriter();
 		pw.print("<script>" 
 		         +"  alert('글 작성 완료');" 

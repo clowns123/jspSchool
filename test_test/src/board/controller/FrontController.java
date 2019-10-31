@@ -22,6 +22,7 @@ public class FrontController extends HttpServlet {
 		list.put("/boardInsert.do", new BoardInsertController());
 		list.put("/boardView.do", new BoardViewConctrller());
 		list.put("/boardUpdate.do", new BoardUpdateController());
+		list.put("/boardDelete.do", new BoardDeleteController());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

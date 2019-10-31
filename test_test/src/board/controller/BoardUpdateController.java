@@ -20,7 +20,6 @@ public class BoardUpdateController implements Controller{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String nextPage = "";
-		int articleNo = 0; 
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");		
 		
@@ -28,7 +27,9 @@ public class BoardUpdateController implements Controller{
 		String title = boardMap.get("title");
 		String content = boardMap.get("content");
 		String imageFileName = boardMap.get("imageFileName");
-	
+		int articleNo = Integer.parseInt(boardMap.get("articleNo"));
+		
+		
 		
 		BoardVO board = new BoardVO();
 		board.setParentNo(0);
@@ -36,10 +37,11 @@ public class BoardUpdateController implements Controller{
 		board.setTitle(title);
 		board.setContent(content);
 		board.setImageFileName(imageFileName);
+		board.setArticleNo(articleNo);
+		
 
 		BoardService service = BoardService.getInstance();
-		service.boardInsert(board);
-
+		service.boardUpdate(board);
 
 		if(imageFileName!=null && imageFileName.length()!=0) {
 		    File srcFile = new 	File(HttpUtil.ARTICLE_IMAGE_REPO +"\\"+"temp"+"\\"+imageFileName);

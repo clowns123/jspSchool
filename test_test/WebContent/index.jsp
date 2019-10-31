@@ -5,6 +5,9 @@
 <title>게시판</title>
 </head>
 <body>	
-	<a href="boardList.do">게시판 보기</a>
+<form action="boardList.do" enctype="multipart/form-data" method="post">
+	<input type="submit" value="게시판 보기"/>
+</form>
+	
 </body>
 </html>

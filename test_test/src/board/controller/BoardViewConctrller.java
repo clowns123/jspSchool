@@ -23,6 +23,7 @@ public class BoardViewConctrller implements Controller{
 
 		System.out.println("Àß³ª¿È");
 		request.setAttribute("board", board);
+		System.out.println("asd" + board.getArticleNo());
 		System.out.println(board.getImageFileName());
 		HttpUtil.forward(request, response, "/boardView.jsp");
 		

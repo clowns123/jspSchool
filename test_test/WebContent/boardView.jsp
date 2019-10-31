@@ -56,7 +56,9 @@
 	    <td align="right"> </td>
 	    <td colspan="2">
 	       <input type="submit" value="수정하기" />
+	       <input type="hidden" value="${board.articleNo}" name = "articleNo">
 	       <input type=button value="목록보기"onClick="backToList(this.form)" />
+	      <a href="${contextPath}/boardDelete.do?articleNo=${board.articleNo}"><input type="button" value="지우기"/></a>
 	    </td>
      </tr>
     </table>

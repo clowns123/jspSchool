@@ -20,10 +20,15 @@ public class BoardDAO {
 		ResultSet rs = null;
 		BoardVO board = null;
 		try {
-			conn = JdbcUtil.connect();
-			String sql = "select level, articleNo, parentNo, title, content, writeDate, id ";
-			sql += "from wboard start with parentNo=0 connect by prior articleNo = parentNo ";
-			sql += " order siblings by articleNo desc ";
+			conn = JdbcUtil.connectP();
+			String sql = "	select level, articleNo, parentNo,\r\n" + 
+					"		lpad('', 4*(level-1))||title title,\r\n" + 
+					"		content, writeDate, id\r\n" + 
+					"	from wboard\r\n" + 
+					"	start with parentNo=0\r\n" + 
+					"	connect by prior articleNo = parentNo\r\n" + 
+					"	order siblings by articleNo desc";
+			
 			System.out.println("sql:"+sql);			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -53,7 +58,7 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;	
 		ResultSet rs = null;
 		try {
-			conn = JdbcUtil.connect();
+			conn = JdbcUtil.connectP();
 			String sql = "SELECT  max(articleNo) from wboard ";
 			System.out.println(sql);
 			pstmt = conn.prepareStatement(sql);
@@ -67,6 +72,7 @@ public class BoardDAO {
 		finally {
 			JdbcUtil.close(conn, pstmt, rs);
 		}	
+		System.out.println("번호 가져옴");
 		return 0;
 	}
 
@@ -78,7 +84,7 @@ public class BoardDAO {
 			conn = JdbcUtil.connectP();
 			String sql = "insert into wboard values (?, ?, ?, ?, ?, sysdate, ?)";
 			System.out.println(sql);
-			int articleNo = getNewArticleNO();//�쁽�옱 寃뚯떆�뙋 �뀒�씠釉붿쓽 max媛� �씫�뼱�삤湲�
+			int articleNo = getNewArticleNO();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1,  articleNo);
 			pstmt.setInt(2,  board.getParentNo());
@@ -87,11 +93,13 @@ public class BoardDAO {
 			pstmt.setString(5, board.getImageFileName());
 			pstmt.setString(6, board.getId());
 			pstmt.executeUpdate();
+			System.out.println("pstmt 설정 끝");
 		} catch (Exception ex) {
 			System.out.println("�삤瑜� 諛쒖깮 : " + ex);
 		} finally {
 			JdbcUtil.close(conn, pstmt);
 		}
+		
 	}	
 	
 	public BoardVO boardView(String num) {
@@ -101,7 +109,7 @@ public class BoardDAO {
 		BoardVO board = new BoardVO();
 		int num1 = Integer.parseInt(num);
 		try {
-			conn = JdbcUtil.connect();
+			conn = JdbcUtil.connectP();
 			String sql = "SELECT  * from wboard where articleNo = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num1);
@@ -131,8 +139,11 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;
 		try {
 			conn = JdbcUtil.connectP();
-			String sql = "Update wboard set title = ?, content = ?, imagefilename = ?, writedate = sysdate where articleNo = ?;";
+			String sql = "Update wboard set title = ?, content = ?, imagefilename = ?, writedate = sysdate where articleNo = ?";
 			System.out.println(sql);
+			System.out.println("title: " + board.getTitle());
+			System.out.println("content: " + board.getContent());
+			System.out.println("no: " + board.getArticleNo());
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board.getTitle());
 			pstmt.setString(2,  board.getContent());
@@ -144,7 +155,30 @@ public class BoardDAO {
 		} finally {
 			JdbcUtil.close(conn, pstmt);
 		}
-	}	
+	}
+	
+	public void boardDelete(String no) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int articleNo = Integer.parseInt(no);
+		try {
+			conn = JdbcUtil.connectP();
+			String sql = "delete from wboard\r\n" + 
+					"	where articleNo in \r\n" + 
+					"	(select articleNo from wboard\r\n" + 
+					"	 start with articleNo = ?\r\n" + 
+					"	 connect by prior articleNo = parentNo)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, articleNo);
+			pstmt.executeQuery();
+			
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	
 	
 	

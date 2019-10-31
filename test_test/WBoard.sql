@@ -8,7 +8,7 @@
 	);
 	*/
 	//creation문장
-	??? WBOARD(
+	create WBOARD(
 		articleNo NUMBER(10) primary key, --게시판글 ID
 		parentNo number(20) default 0,    --부모 게시판글 ID
 		title VARCHAR2(500) NOT NULL,     --게시글 제목

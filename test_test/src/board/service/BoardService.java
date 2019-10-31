@@ -20,6 +20,8 @@ public class BoardService {
 	//2. 寃뚯떆�뙋 �벑濡�
 	public void boardInsert(BoardVO board) {
 		dao.boardInsert(board);
+
+		System.out.println("리턴");
 	}
 	
 	public BoardVO boardView(String num) {
@@ -31,6 +33,9 @@ public class BoardService {
 	
 	public void boardUpdate(BoardVO board) {
 		dao.boardUpdate(board);
+	}
+	public void boardDelete(String articleNo) {
+		dao.boardDelete(articleNo);
 	}
 
 }
